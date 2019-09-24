@@ -39,12 +39,12 @@ logger.error('Plain text error.', {
     foo: 'bar',
   },
   tags: {
-    foo: 'bar'
+    foo: 'bar',
   },
   user: {
     ip: '127.0.0.1',
-    username: 'user1'
-  }
+    username: 'user1',
+  },
 });
 ```
 
@@ -80,7 +80,7 @@ By default, if you provide an Error Object to logger, this package will set the 
 ```javascript
 {
   stack: err.stack,
-  message: err.message
+  message: err.message,
 }
 ```
 
