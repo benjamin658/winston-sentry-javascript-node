@@ -1,6 +1,6 @@
 {
   "name": "winston-sentry-javascript-node",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Sentry transport for the winson logger that using official Sentry SDK for javascript instead of the old Raven.",
   "main": "lib/index.js",
   "scripts": {

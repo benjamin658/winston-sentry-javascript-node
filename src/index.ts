@@ -2,10 +2,6 @@ import { LogEntry } from 'winston';
 import Transport, { TransportStreamOptions } from 'winston-transport';
 import * as Sentry from '@sentry/node';
 
-export interface SentryOption {
-  dsn: string;
-}
-
 export interface Extra {
   extra?: {
     [key: string]: any;
@@ -22,14 +18,17 @@ export interface UserInfo {
   user?: Sentry.User
 }
 
+export interface SentryOptions {
+  sentry: Sentry.NodeOptions;
+}
+
 export type Log = LogEntry & Extra & Tag & UserInfo;
 
 export class SentryTransport extends Transport {
-  public constructor(opts: TransportStreamOptions & SentryOption) {
-    super(opts);
-    Sentry.init({
-      dsn: opts.dsn,
-    });
+  public constructor(opts: TransportStreamOptions & SentryOptions) {
+    const { sentry, ...rest } = opts;
+    super(rest);
+    Sentry.init(sentry);
   }
 
   public log(info: Log, next: () => void): void {
