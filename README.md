@@ -1,8 +1,8 @@
 # winston-sentry-javascript-node
 
-[![winston](https://img.shields.io/badge/winston-3.x+-brightgreen.svg)][winston-url]
+[![winston](https://img.shields.io/badge/winston-3.x+-brightgreen.svg)](https://github.com/winstonjs/winston#handling-uncaught-exceptions-with-winston)
 
-Sentry transport for the winson logger and uses the [@sentry/node](https://github.com/getsentry/sentry-javascript/tree/master/packages/node) SDK instead of the old Raven.
+Sentry transport for the winson logger 3+ and uses the [@sentry/node](https://github.com/getsentry/sentry-javascript/tree/master/packages/node) SDK instead of the old Raven.
 
 > This package is written in Typescript with the well typing and code quality.
 
