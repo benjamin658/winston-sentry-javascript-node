@@ -1,11 +1,37 @@
 {
   "name": "winston-sentry-javascript-node",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.1.0",
+  "description": "Sentry transport for the winson logger that using official Sentry SDK for javascript instead of the old Raven.",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rm -rf lib && tsc",
+    "prepublish": "npm run build"
   },
   "author": "Ben Hu <benjamin658gae@gmail.com>",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benjamin658/winston-sentry-javascript-node.git"
+  },
+  "keywords": [
+    "winston",
+    "winston-logger",
+    "winston-transport",
+    "sentry",
+    "sentry-javascript",
+    "typescript"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^12.7.5",
+    "@typescript-eslint/eslint-plugin": "^2.3.0",
+    "@typescript-eslint/parser": "^2.3.0",
+    "eslint": "^6.4.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "@sentry/node": "^5.6.2",
+    "winston": "^3.2.1",
+    "winston-transport": "^4.3.0"
+  }
 }
