@@ -1,3 +1,9 @@
+<!--
+  Title: Winston Sentry
+  Description: Sentry transport for the winston logger that using the official Sentry SDK for Javascript instead of the old Raven.
+  Author: benjamin658
+  -->
+
 # winston-sentry-javascript-node
 
 [![winston](https://img.shields.io/badge/winston-3.x+-brightgreen.svg)](https://github.com/winstonjs/winston#handling-uncaught-exceptions-with-winston)
