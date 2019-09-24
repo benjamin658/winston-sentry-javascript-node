@@ -26,7 +26,9 @@ import { SentryTransport } from 'winston-sentry-javascript-node';
 const logger = winston.createLogger({
   transports: [
     new SentryTransport({
-      dsn: 'MY_SENTRY_DSN',
+      sentry{
+        dsn: 'MY_SENTRY_DSN',
+      },
     }),
   ],
 });
@@ -62,7 +64,9 @@ Catch and send `uncaughtException` to the Sentry.
 const logger = winston.createLogger({
   transports: [
     new SentryTransport({
-      dsn: 'MY_SENTRY_DSN',
+      sentry{
+        dsn: 'MY_SENTRY_DSN',
+      },
       handleExceptions: true,
     }),
   ],
@@ -73,11 +77,36 @@ const logger = winston.createLogger({
 const logger = winston.createLogger({
   exceptionHandlers: [
     new SentryTransport({
-      dsn: 'MY_SENTRY_DSN',
+      sentry: {
+        dsn: 'MY_SENTRY_DSN',
+      }
     }),
   ]
 });
 ```
+
+## Options
+
+```javascript
+new SentryTransport(opts)
+```
+
+* opts: TransportStreamOptions
+
+```javascript
+interface TransportStreamOptions {
+  format?: logform.Format;
+  level?: string;
+  silent?: boolean;
+  handleExceptions?: boolean;
+
+  log?(info: any, next: () => void): any;
+  logv?(info: any, next: () => void): any;
+  close?(): void;
+}
+```
+
+* opts.sentry: Please see [Sentry client options](https://docs.sentry.io/error-reporting/configuration/?platform=javascript).
 
 ## Default Extra for Error Object
 

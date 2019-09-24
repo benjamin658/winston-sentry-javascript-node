@@ -5,7 +5,9 @@ import { SentryTransport } from '../src/index';
 const logger = winston.createLogger({
   transports: [
     new SentryTransport({
-      dsn: process.env.SENTRY_DSN,
+      sentry: {
+        dsn: process.env.SENTRY_DSN,
+      },
       level: 'error',
       handleExceptions: true,
     })
