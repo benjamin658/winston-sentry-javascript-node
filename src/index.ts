@@ -33,6 +33,11 @@ export class SentryTransport extends Transport {
   }
 
   public log(info: Log, next: () => void): void {
+    if (this.silent) {
+      next();
+      return;
+    }
+
     if (typeof info.extra !== 'undefined') {
       this.setExtra(info.extra);
     }
@@ -45,6 +50,8 @@ export class SentryTransport extends Transport {
       this.setUserInfo(info.user);
     }
 
+    this.setLevel(this.getLevel(info.level));
+
     if (info instanceof Error) {
       this.setExtra({
         stack: info.stack,
@@ -56,10 +63,16 @@ export class SentryTransport extends Transport {
       this.setExtra(info);
       Sentry.captureException(info.error);
     } else {
-      Sentry.captureMessage(info.message, this.getLevel(info.level));
+      Sentry.captureMessage(info.message);
     }
 
     next();
+  }
+
+  private setLevel(level: string) {
+    Sentry.configureScope((scope) => {
+      scope.setLevel(this.getLevel(level));
+    })
   }
 
   private setExtra(extra: { [key: string]: any }): void {
@@ -92,6 +105,8 @@ export class SentryTransport extends Transport {
         return Sentry.Severity.Debug;
       case 'log':
         return Sentry.Severity.Log;
+      case 'info':
+        return Sentry.Severity.Info;
       case 'warning':
         return Sentry.Severity.Warning;
       case 'error':
