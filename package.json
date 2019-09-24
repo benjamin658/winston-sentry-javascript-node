@@ -12,6 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/benjamin658/winston-sentry-javascript-node.git"
   },
+  "homepage": "https://github.com/benjamin658/winston-sentry-javascript-node",
   "keywords": [
     "winston",
     "winston-logger",

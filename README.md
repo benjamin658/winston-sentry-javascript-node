@@ -1,6 +1,8 @@
 # winston-sentry-javascript-node
 
 [![winston](https://img.shields.io/badge/winston-3.x+-brightgreen.svg)](https://github.com/winstonjs/winston#handling-uncaught-exceptions-with-winston)
+[![npm version](https://badge.fury.io/js/winston-sentry-javascript-node.svg)](https://badge.fury.io/js/winston-sentry-javascript-node)
+[![license](https://img.shields.io/github/license/benjamin658/winston-sentry-javascript-node)](https://github.com/benjamin658/winston-sentry-javascript-node/blob/master/License)
 
 Sentry transport for the winson logger 3+ and uses the [@sentry/node](https://github.com/getsentry/sentry-javascript/tree/master/packages/node) SDK instead of the old Raven.
 
