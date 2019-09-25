@@ -2,27 +2,27 @@ import { LogEntry } from 'winston';
 import Transport, { TransportStreamOptions } from 'winston-transport';
 import * as Sentry from '@sentry/node';
 
-export interface Extra {
-  extra?: {
-    [key: string]: any;
-  }
-}
-
 export interface Tag {
   tags?: {
     [key: string]: any;
-  }
+  };
 }
 
 export interface UserInfo {
-  user?: Sentry.User
+  user?: Sentry.User;
+}
+
+export interface Extra {
+  extra?: {
+    [key: string]: any;
+  };
 }
 
 export interface SentryOptions {
   sentry: Sentry.NodeOptions;
 }
 
-export type Log = LogEntry & Extra & Tag & UserInfo;
+export type Log = LogEntry & Tag & UserInfo & Extra;
 
 export class SentryTransport extends Transport {
   public constructor(opts: TransportStreamOptions & SentryOptions) {
@@ -32,71 +32,58 @@ export class SentryTransport extends Transport {
   }
 
   public log(info: Log, next: () => void): void {
+    setImmediate(() => {
+      this.emit('logged', info);
+    });
+
     if (this.silent) {
       next();
       return;
     }
 
-    if (typeof info.extra !== 'undefined') {
-      this.setExtra(info.extra);
-    }
+    const {
+      tags,
+      user,
+      extra,
+      level,
+      stack,
+      message,
+      error,
+    } = info;
 
-    if (typeof info.tags !== 'undefined') {
-      this.setTag(info.tags);
-    }
+    Sentry.withScope((scope) => {
+      scope.setLevel(SentryTransport.getLevel(level));
 
-    if (typeof info.user !== 'undefined') {
-      this.setUserInfo(info.user);
-    }
+      if (typeof tags !== 'undefined') {
+        scope.setTags(tags);
+      }
 
-    this.setLevel(this.getLevel(info.level));
+      if (typeof user !== 'undefined') {
+        scope.setUser(user);
+      }
 
-    if (info instanceof Error) {
-      this.setExtra({
-        stack: info.stack,
-        message: info.message,
-      });
+      if (typeof extra !== 'undefined') {
+        scope.setExtras(extra);
+      }
 
-      Sentry.captureException(info);
-    } else if (info.exception && this.handleExceptions) {
-      this.setExtra(info);
-      Sentry.captureException(info.error);
-    } else {
-      Sentry.captureMessage(info.message);
-    }
+      if (info instanceof Error) {
+        scope.setExtras({
+          stack,
+          message,
+        });
 
-    next();
-  }
+        Sentry.captureException(info);
+      } else if (info.exception && this.handleExceptions) {
+        Sentry.captureException(error);
+      } else {
+        Sentry.captureMessage(message);
+      }
 
-  private setLevel(level: string) {
-    Sentry.configureScope((scope) => {
-      scope.setLevel(this.getLevel(level));
-    })
-  }
-
-  private setExtra(extra: { [key: string]: any }): void {
-    Sentry.configureScope((scope) => {
-      Object.entries(extra).forEach((e) => {
-        scope.setExtra(e[0], e[1]);
-      })
+      next();
     });
   }
 
-  private setTag(tag: { [key: string]: any }): void {
-    Sentry.configureScope((scope) => {
-      Object.entries(tag).forEach((t) => {
-        scope.setTag(t[0], t[1]);
-      })
-    });
-  }
-
-  private setUserInfo(user: Sentry.User): void {
-    Sentry.configureScope((scope) => {
-      scope.setUser(user);
-    });
-  }
-
-  private getLevel(level: string): Sentry.Severity {
+  private static getLevel(level: string): Sentry.Severity {
     switch (level) {
       case 'silly':
       case 'verbose':

@@ -43,15 +43,16 @@ Set user information, as well as tags and further extras.
 
 ```javascript
 logger.error('Plain text error.', {
-  extra: {
-    foo: 'bar',
-  },
   tags: {
     foo: 'bar',
   },
   user: {
     ip: '127.0.0.1',
     username: 'user1',
+  },
+  extra: {
+    extra1: 'extra1',
+    extra2: 'extra2',
   },
 });
 ```

@@ -10,21 +10,22 @@ const logger = winston.createLogger({
       },
       level: 'error',
       handleExceptions: true,
-    })
-  ]
-})
+    }),
+  ],
+});
 
-logger.error('Plain text error.');
 logger.error(new Error('Something went wrong.'));
+logger.error('Plain text error.');
 logger.error('Plain text error.', {
-  extra: {
-    foo: 'bar',
-  },
   tags: {
     foo: 'bar',
   },
   user: {
     ip: '127.0.0.1',
     username: 'user1',
+  },
+  extra: {
+    extra1: 'extra1',
+    extra2: 'extra2',
   },
 });
