@@ -24,8 +24,10 @@ export interface SentryOptions {
 
 export type Log = LogEntry & Tag & UserInfo & Extra;
 
+export type SentryTransportOption = TransportStreamOptions & SentryOptions;
+
 export class SentryTransport extends Transport {
-  public constructor(opts: TransportStreamOptions & SentryOptions) {
+  public constructor(opts: SentryTransportOption) {
     const { sentry, ...rest } = opts;
     super(rest);
     Sentry.init(sentry);
@@ -74,6 +76,14 @@ export class SentryTransport extends Transport {
 
         Sentry.captureException(info);
       } else if (info.exception && this.handleExceptions) {
+        scope.setExtras({
+          stack,
+          message,
+          process: info.process,
+          os: info.os,
+          trace: info.trace,
+        });
+
         Sentry.captureException(error);
       } else {
         Sentry.captureMessage(message);
