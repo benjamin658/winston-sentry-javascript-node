@@ -26,7 +26,7 @@ import { SentryTransport } from 'winston-sentry-javascript-node';
 const logger = winston.createLogger({
   transports: [
     new SentryTransport({
-      sentry{
+      sentry:{
         dsn: 'MY_SENTRY_DSN',
       },
     }),
